@@ -1,0 +1,99 @@
+﻿@page "/workday"
+@inject WorkingDayCalendar workdayCalendar;
+@using Syncfusion.Blazor.Buttons;
+@using Syncfusion.Blazor.Calendars
+
+<PageTitle>Working Days Calendar</PageTitle>
+
+<h1>Working Days Calendar</h1>
+
+<p role="status">Working days:@resultDateTime.ToString("dd.MM.yyyy HH:mm")</p>
+
+<table class="table">
+        <thead>
+            <tr>
+            <th>Working Days Calculation:</th>
+             <th>Public Holiday Settings:</th>
+            <th>Start/End Time Settings:</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+            <td>
+                Select date:<SfCalendar TValue="DateTime" @bind-Value="@workdayCalendar.selectedDateTime"></SfCalendar>                
+                Days to add:<SfTextBox @bind-Value="@numofDays"></SfTextBox>
+                <button class="btn btn-primary" @onclick="SetNumberOfDays">Caculate Working Day</button>
+            </td>
+            <td>
+                <InputRadioGroup Name="Holidays" @bind-Value="@isRecurring">
+                    <InputRadio Name="Holidays" Value="@false" />Public Holidays<br>
+                    <InputRadio Name="Holidays" Value="@true" />Recurring Holidays<br>
+                </InputRadioGroup>
+                <SfCalendar TValue="DateTime" @bind-Value="@recurringDateTime"></SfCalendar>
+                Add:<button class="btn btn-primary" @onclick="AddHolidays">Add</button>
+                <SfTextBox @bind-Value ="@resultString"></SfTextBox>
+            </td>
+            <td>                
+                Start Time:<SfTimePicker TValue="DateTime" @bind-Value="@workdayCalendar.WorkingDateStarts" Min="@MinTime" Max="@MaxTime" Format="HH:mm" Step="15"></SfTimePicker>
+                End Time:<SfTimePicker TValue="DateTime" @bind-Value="@workdayCalendar.WorkingDateEnds" Min="@MinTime" Max="@MaxTime" Format="HH:mm" Step="15"></SfTimePicker>
+                <SfButton Content="Submit Time Settings" OnClick="CheckforHours"></SfButton>
+                Recurring Holidays:<SfListView DataSource="@recurringDateTimes"> </SfListView>
+                Public Holidays:<SfListView DataSource="@holidayDateTimes"> </SfListView> 
+            </td>
+            </tr>
+           
+          </tbody>
+ </table>
+
+@code {
+    public bool IsDialog { get; set; } =true;
+    private string numofDays { get; set; }= "0";
+
+    private DateTime recurringDateTime { get; set; } = DateTime.Now;
+    private List<DateTime> recurringDateTimes { get; set; } = new();
+
+    private DateTime holidayDateTime { get; set; } = DateTime.Now;
+    private List<DateTime> holidayDateTimes { get; set; } = new();
+
+    private string resultString { get; set; } = "";
+    private DateTime resultDateTime { get; set; } = DateTime.Now;
+
+    private DateTime TimeValue { get; set; } = new DateTime(2024, 05, 15, 09, 00, 00);
+    private DateTime MinTime { get; set; } = new DateTime(2024, 05, 15, 05, 00, 00);
+    private DateTime MaxTime { get; set; } = new DateTime(2024, 05, 15, 20, 00, 00);
+
+    [Parameter]
+    public bool isRecurring { get; set; } =true;
+
+    private async void SetNumberOfDays()
+    {
+        await Task.Run(() =>
+        {
+            resultDateTime = @workdayCalendar.getResultDatetime(Convert.ToDouble(@numofDays));
+        });
+    }
+
+    public void AddHolidays()
+    {
+        if (isRecurring)
+        {
+            recurringDateTimes = @workdayCalendar.addRecurringDays(recurringDateTime);
+            resultString = "Recurring Holiday " + recurringDateTime.ToString("dd.MM.yy") + " is added";
+        }
+        else
+        {
+            holidayDateTimes = @workdayCalendar.addPublicHolidays(recurringDateTime);
+            resultString = "Public Holiday " + recurringDateTime.ToString("dd.MM.yy") + " is added";
+        }
+    }
+    // prevent working hours more than 8 hours
+    private void CheckforHours()
+    {
+        TimeSpan timeSpan = new TimeSpan(8, 0, 0);
+        if (workdayCalendar.WorkingDateEnds.Subtract(workdayCalendar.WorkingDateStarts) > timeSpan)
+        {
+            IsDialog = true;
+
+        }
+    }       
+}
