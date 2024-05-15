@@ -61,9 +61,9 @@
         public void ExceedsByMinutes1()
         {
             //Arrange
-            workingDays = 1.5;
-            var result1 = new DateTime(2024, 5, 14, 12, 00, 0);
-            _workDayCalendar.selectedDateTime = new DateTime(2024, 5, 13, 01, 05, 0);
+            workingDays = 2;
+            var result1 = new DateTime(2024, 5, 20, 08, 00, 0);
+            _workDayCalendar.selectedDateTime = new DateTime(2024, 5, 15, 21, 05, 0);
 
             //Act
             var result = _workDayCalendar.getResultDatetime(workingDays);
