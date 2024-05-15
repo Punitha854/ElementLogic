@@ -18,10 +18,9 @@
         [TestMethod]
         public void StartDateInWeekend()
         {
-            //Arrange
-            var time = DateTime.Now;
-            _workDayCalendar.selectedDateTime = new DateTime(2024, 5, 11);
-            var result1 = new DateTime(2024, 5, 18, 8, 0, 0);
+            //Arrange            
+            _workDayCalendar.selectedDateTime = new DateTime(2024, 5, 11,21,0,0);
+            var result1 = new DateTime(2024, 5, 20, 8, 0, 0);
 
             //ACT
             var result = _workDayCalendar.getResultDatetime(workingDays);
@@ -34,8 +33,8 @@
         public void MiddleDateInWeekend()
         {
             //Arrange            
-            _workDayCalendar.selectedDateTime = new DateTime(2024, 5, 10);
-            var result1 = new DateTime(2024, 5, 18, 8, 0, 0);
+            _workDayCalendar.selectedDateTime = new DateTime(2024, 5, 10,21,0,0);
+            var result1 = new DateTime(2024, 5, 20, 08, 0, 0);
 
             //ACT
             var result = _workDayCalendar.getResultDatetime(workingDays);
