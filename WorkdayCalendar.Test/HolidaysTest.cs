@@ -33,8 +33,8 @@
         public void MiddleDateInWeekend()
         {
             //Arrange            
-            _workDayCalendar.selectedDateTime = new DateTime(2024, 5, 10,21,0,0);
-            var result1 = new DateTime(2024, 5, 20, 08, 0, 0);
+            _workDayCalendar.selectedDateTime = new DateTime(2024, 5, 10,15,0,0);
+            var result1 = new DateTime(2024, 5, 17, 15, 0, 0);
 
             //ACT
             var result = _workDayCalendar.getResultDatetime(workingDays);

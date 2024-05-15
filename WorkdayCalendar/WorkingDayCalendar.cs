@@ -59,6 +59,7 @@
                         hours = currentHour - WorkingDateEnds.Hour;
                         if (hours > 0 || minute > 0) days++;
                     }
+                    else hours = currentHour- WorkingDateStarts.Hour;
                 }
                 else
                 {
