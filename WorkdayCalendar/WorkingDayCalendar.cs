@@ -74,14 +74,14 @@
 
                 while (i < Math.Abs(days))
                 {
+                    selectedDateTime = IsNegative ? selectedDateTime.AddDays(-1) : selectedDateTime.AddDays(1);
                     if (!(selectedDateTime.DayOfWeek == DayOfWeek.Sunday
                         || selectedDateTime.DayOfWeek == DayOfWeek.Saturday
                         || IsRecurringHolidaysExists(selectedDateTime.Date)
                         || this.PublicHolidays.Contains(selectedDateTime.Date)))
                     {
                         i++;
-                    }
-                    selectedDateTime = IsNegative ? selectedDateTime.AddDays(-1) : selectedDateTime.AddDays(1);
+                    }                    
                 }
                 if (IsNegative)
                 {

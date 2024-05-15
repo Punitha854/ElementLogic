@@ -1,11 +1,12 @@
 ﻿@page "/workday"
 @inject WorkingDayCalendar workdayCalendar;
-@using Syncfusion.Blazor.Buttons;
-@using Syncfusion.Blazor.Calendars
+@* @rendermode InteractiveAuto *@
+
 
 <PageTitle>Working Days Calendar</PageTitle>
 
 <h1>Working Days Calendar</h1>
+
 
 <p role="status">Working days:@resultDateTime.ToString("dd.MM.yyyy HH:mm")</p>
 
@@ -19,8 +20,8 @@
         </thead>
         <tbody>
             <tr>
-            <td>
-                Select date:<SfCalendar TValue="DateTime" @bind-Value="@workdayCalendar.selectedDateTime"></SfCalendar>                
+            <td>                
+                Select date:<SfCalendar TValue="DateTime" @bind-Value="@workdayCalendar.selectedDateTime" ></SfCalendar>
                 Days to add:<SfTextBox @bind-Value="@numofDays"></SfTextBox>
                 <button class="btn btn-primary" @onclick="SetNumberOfDays">Caculate Working Day</button>
             </td>
@@ -65,12 +66,13 @@
     [Parameter]
     public bool isRecurring { get; set; } =true;
 
-    private async void SetNumberOfDays()
+    private  void SetNumberOfDays()
     {
-        await Task.Run(() =>
+        //await Task.Run(() =>
         {
             resultDateTime = @workdayCalendar.getResultDatetime(Convert.ToDouble(@numofDays));
-        });
+        };
+        //);
     }
 
     public void AddHolidays()
