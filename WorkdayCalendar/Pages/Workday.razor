@@ -1,14 +1,19 @@
 ﻿@page "/workday"
 @inject WorkingDayCalendar workdayCalendar;
-@* @rendermode InteractiveAuto *@
-
-
+@rendermode InteractiveAuto
+@inject SfDialogService DialogService
 <PageTitle>Working Days Calendar</PageTitle>
 
 <h1>Working Days Calendar</h1>
-
-
 <p role="status">Working days:@resultDateTime.ToString("dd.MM.yyyy HH:mm")</p>
+<div id="target">   
+    <SfDialog Target="#target" Width="300px" ShowCloseIcon="true" @bind-Visible="@IsDialog" AllowPrerender="true" IsModal="true">
+        <DialogTemplates>
+            <Header> Input Error!! </Header>
+            <Content> Working Hours should be equal to 8 hours </Content>
+        </DialogTemplates>
+    </SfDialog>
+</div>
 
 <table class="table">
         <thead>
@@ -21,7 +26,7 @@
         <tbody>
             <tr>
             <td>                
-                Select date:<SfCalendar TValue="DateTime" @bind-Value="@workdayCalendar.selectedDateTime" ></SfCalendar>
+                Select date:<SfDateTimePicker TValue="DateTime" @bind-Value="@workdayCalendar.selectedDateTime" ></SfDateTimePicker>
                 Days to add:<SfTextBox @bind-Value="@numofDays"></SfTextBox>
                 <button class="btn btn-primary" @onclick="SetNumberOfDays">Caculate Working Day</button>
             </td>
@@ -47,7 +52,7 @@
  </table>
 
 @code {
-    public bool IsDialog { get; set; } =true;
+    public bool IsDialog { get; set; } =false;
     private string numofDays { get; set; }= "0";
 
     private DateTime recurringDateTime { get; set; } = DateTime.Now;
@@ -59,7 +64,7 @@
     private string resultString { get; set; } = "";
     private DateTime resultDateTime { get; set; } = DateTime.Now;
 
-    private DateTime TimeValue { get; set; } = new DateTime(2024, 05, 15, 09, 00, 00);
+    private DateTime? TimeValue { get; set; } = new DateTime(2024, 05, 15, 09, 00, 00);
     private DateTime MinTime { get; set; } = new DateTime(2024, 05, 15, 05, 00, 00);
     private DateTime MaxTime { get; set; } = new DateTime(2024, 05, 15, 20, 00, 00);
 
@@ -89,13 +94,14 @@
         }
     }
     // prevent working hours more than 8 hours
-    private void CheckforHours()
+    private async void CheckforHours()
     {
         TimeSpan timeSpan = new TimeSpan(8, 0, 0);
-        if (workdayCalendar.WorkingDateEnds.Subtract(workdayCalendar.WorkingDateStarts) > timeSpan)
+        if (workdayCalendar.WorkingDateEnds.Subtract(workdayCalendar.WorkingDateStarts) != timeSpan)
         {
-            IsDialog = true;
-
+           IsDialog = true;
         }
-    }       
+    } 
+    
+   
 }
