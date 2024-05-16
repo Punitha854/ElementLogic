@@ -16,16 +16,18 @@
         // Recurring holiday collection list is added and verified for duplicates
         public List<DateTime> addRecurringDays(DateTime givenDate)
         {
-            if (!RecurringHolidays.Contains(givenDate))
-                this.RecurringHolidays.Add(givenDate);
+            var time = new DateTime(givenDate.Year, givenDate.Month, givenDate.Day);
+            if (!RecurringHolidays.Contains(time))
+                this.RecurringHolidays.Add(time);
             return RecurringHolidays;
         }
 
         // Public holiday collection list is added and verified for duplicates
         public List<DateTime> addPublicHolidays(DateTime givenDate)
         {
-            if (!PublicHolidays.Contains(givenDate))
-                this.PublicHolidays.Add(givenDate);
+            var time = new DateTime(givenDate.Year, givenDate.Month, givenDate.Day);
+            if (!PublicHolidays.Contains(time))
+                this.PublicHolidays.Add(time);
             return PublicHolidays;
         }
         //This function return the working day from the given date and count 
