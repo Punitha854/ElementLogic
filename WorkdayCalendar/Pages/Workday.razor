@@ -66,13 +66,13 @@
     [Parameter]
     public bool isRecurring { get; set; } =true;
 
-    private  void SetNumberOfDays()
+    private  async void SetNumberOfDays()
     {
-        //await Task.Run(() =>
+        await Task.Run(() =>
         {
             resultDateTime = @workdayCalendar.getResultDatetime(Convert.ToDouble(@numofDays));
-        };
-        //);
+        });
+    
     }
 
     public void AddHolidays()
